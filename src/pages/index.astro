@@ -10,7 +10,8 @@ import Link from "@/components/Link.astro";
     <div class="flex flex-col sm:flex-row sm:items-baseline gap-6">
       <Image
         src={meImage}
-        alt="A picture of me."
+        alt="Me!"
+        loading="eager"
         class="w-32 h-32 sm:w-42 sm:h-42"
       />
       <Link href="/me">
@@ -48,7 +49,7 @@ import Link from "@/components/Link.astro";
   </section>
 
   <div class="mt-8 flex gap-6">
-    <Link href="https://github.com" external>GitHub</Link>
-    <Link href="https://linkedin.com" external>LinkedIn</Link>
+    <Link href="https://github.com/ujaandas/" external>GitHub</Link>
+    <Link href="https://linkedin.com/in/ujaandas/" external>LinkedIn</Link>
   </div>
 </Layout>
