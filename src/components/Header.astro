@@ -1,5 +1,6 @@
 ---
 import { ModeToggle } from "./ModeToggle";
+import Link from "./Link.astro";
 ---
 
 <header class="py-4 flex items-center justify-between">
@@ -15,21 +16,10 @@ import { ModeToggle } from "./ModeToggle";
     <nav
       class="hidden sm:flex items-center gap-5 text-lg font-medium text-zinc-600 dark:text-zinc-400"
     >
-      <a
-        href="/work"
-        class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
-        >work</a
-      >
-      <a
-        href="/projects"
-        class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
-        >projects</a
-      >
-      <a
-        href="/blog"
-        class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
-        >blog</a
-      >
+      <Link href="/work">work</Link>
+      <Link href="/projects">projects</Link>
+      <Link href="/blog">blog</Link>
+      <Link href="/reads">reads</Link>
     </nav>
 
     <ModeToggle client:load />
