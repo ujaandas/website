@@ -1,0 +1,37 @@
+---
+import { ModeToggle } from "./ModeToggle";
+---
+
+<header class="py-8 flex items-center justify-between">
+  <a href="/" class="flex items-center gap-2 group aria-label='Home'">
+    <img
+      src="/favicon.svg"
+      alt="Logo"
+      class="w-8 h-8 group-hover:scale-110 transition-transform"
+    />
+  </a>
+
+  <div class="flex items-center gap-6">
+    <nav
+      class="hidden sm:flex items-center gap-5 text-sm font-medium text-zinc-600 dark:text-zinc-400"
+    >
+      <a
+        href="/work"
+        class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+        >Work</a
+      >
+      <a
+        href="/projects"
+        class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+        >Projects</a
+      >
+      <a
+        href="/blog"
+        class="hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+        >Blog</a
+      >
+    </nav>
+
+    <ModeToggle client:load />
+  </div>
+</header>
