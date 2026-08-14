@@ -1,0 +1,29 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import WritingItem from "@/components/WritingItem.astro";
+
+const allPosts = await getCollection("writing");
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<Layout title="Writing | Ujaan Das">
+  <div class="flex flex-col gap-8">
+    <h1 class="text-2xl font-bold tracking-tight">Writing</h1>
+
+    <div class="flex flex-col">
+      {
+        sortedPosts.map((item) => (
+          <WritingItem
+            title={item.data.title}
+            date={item.data.date}
+            href={`/blog/${item.id}`}
+            body={item.body}
+          />
+        ))
+      }
+    </div>
+  </div>
+</Layout>

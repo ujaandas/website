@@ -1,0 +1,53 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  href: string;
+  body?: string;
+}
+
+const { title, date, href, body } = Astro.props;
+
+const format = (d: Date) => {
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    year: "numeric",
+    day: "2-digit",
+  });
+};
+
+const dateString = format(date);
+
+const snippet = body
+  ? body
+      .replace(/^#+\s+.*/gm, "") // remove headings
+      .replace(/!\[.*?\]\(.*?\)/g, "") // remove images
+      .replace(/\[(.*?)\]\(.*?\)/g, "$1") // strip link syntax, keep text
+      .replace(/[*_`~>#-]/g, "") // remove markdown formatting characters
+      .replace(/\s+/g, " ") // collapse whitespace & newlines
+      .trim()
+  : undefined;
+---
+
+<a
+  href={href}
+  class="group flex flex-col gap-1 py-3 border-b border-zinc-200 dark:border-zinc-800"
+>
+  <div class="flex justify-between items-baseline gap-4">
+    <span
+      class="text-zinc-800 dark:text-zinc-200 font-medium group-hover:text-blue-600 transition-colors"
+    >
+      {title}
+    </span>
+    <span class="text-zinc-500 text-sm shrink-0">
+      {dateString}
+    </span>
+  </div>
+  {
+    snippet && (
+      <p class="text-sm text-zinc-500 dark:text-zinc-400 line-clamp-2">
+        {snippet}
+      </p>
+    )
+  }
+</a>

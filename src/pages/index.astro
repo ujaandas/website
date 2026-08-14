@@ -6,7 +6,7 @@ import Link from "@/components/Link.astro";
 import { getCollection } from "astro:content";
 import Section from "@/components/Section.astro";
 import WorkItem from "@/components/WorkItem.astro";
-import PostItem from "@/components/PostItem.astro";
+import WritingItem from "@/components/WritingItem.astro";
 import ProjectItem from "@/components/ProjectItem.astro";
 
 const MAX_WORK = 3;
@@ -18,8 +18,8 @@ const sortedWork = allWork
   .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf())
   .slice(0, MAX_WORK);
 
-const allPosts = await getCollection("posts");
-const sortedPosts = allPosts
+const allWriting = await getCollection("writing");
+const sortedWriting = allWriting
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, MAX_POSTS);
 
@@ -77,14 +77,14 @@ const sortedProjects = allProjects
       </div>
     </Section>
 
-    <Section title="Recent Writing" linkText="See all →" linkHref="/blog">
+    <Section title="Recent Writing" linkText="See all →" linkHref="/writing">
       <div class="flex flex-col gap-4">
         {
-          sortedPosts.map((item) => (
-            <PostItem
+          sortedWriting.map((item) => (
+            <WritingItem
               title={item.data.title}
               date={item.data.date}
-              href={`/blog/${item.id}`}
+              href={`/writing/${item.id}`}
             />
           ))
         }
