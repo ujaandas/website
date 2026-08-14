@@ -17,10 +17,10 @@ export default config({
         }),
     },
     collections: {
-        posts: collection({
-            label: "Posts",
+        writing: collection({
+            label: "Writing",
             slugField: "title",
-            path: "src/content/posts/*",
+            path: "src/content/writing/*",
             format: { contentField: "content" },
             schema: {
                 title: fields.slug({ name: { label: "Title" } }),
@@ -36,11 +36,12 @@ export default config({
             schema: {
                 title: fields.slug({ name: { label: "Title" } }),
                 description: fields.text({ label: "Short Description", multiline: true }),
+                date: fields.date({ label: "Date" }),
                 href: fields.text({ label: "Project URL (GitHub/Live Site)" }),
-                thumbnail: fields.image({
-                    label: "Thumbnail",
+                image: fields.image({
+                    label: "Thumbnail / Cover Image",
                     directory: "src/assets/images/projects",
-                    publicPath: "@/assets/images/projects"
+                    publicPath: "../../assets/images/projects/",
                 }),
                 content: fields.markdoc({ label: "Content (Optional)" }),
             },
@@ -54,8 +55,11 @@ export default config({
                 company: fields.slug({ name: { label: "Company" } }),
                 role: fields.text({ label: "Job Title / Role" }),
                 startDate: fields.date({ label: "Start Date" }),
-                endDate: fields.date({ label: "End Date" }),
-                description: fields.text({ label: "Brief Description" }),
+                endDate: fields.text({
+                    label: "End Date",
+                    description: "Enter a date (YYYY-MM-DD) or 'Present'",
+                }),
+                description: fields.text({ label: "Brief Description", multiline: true }),
                 content: fields.markdoc({ label: "Detailed Bullet Points" }),
             },
         }),
