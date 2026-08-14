@@ -18,7 +18,11 @@ const sortedWork = allWork
   .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf())
   .slice(0, MAX_WORK);
 
-const posts = (await getCollection("posts")).slice(0, MAX_POSTS);
+const allPosts = await getCollection("posts");
+const sortedPosts = allPosts
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, MAX_POSTS);
+
 const projects = (await getCollection("projects")).slice(0, MAX_PROJECTS);
 ---
 
@@ -84,16 +88,15 @@ const projects = (await getCollection("projects")).slice(0, MAX_PROJECTS);
 
   <Section title="Recent Writing" linkText="See all →" linkHref="/blog">
     <div class="flex flex-col gap-4">
-      <PostItem
-        title="Verifying LLM outputs with formal methods"
-        date="Oct 24"
-        href="/blog/formal-methods"
-      />
-      <PostItem
-        title="Why I switched my entire homelab to NixOS"
-        date="Sep 12"
-        href="/blog/nixos-homelab"
-      />
+      {
+        sortedPosts.map((item) => (
+          <PostItem
+            title={item.data.title}
+            date={item.data.date}
+            href={`/blog/${item.id}`}
+          />
+        ))
+      }
     </div>
   </Section>
 
