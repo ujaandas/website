@@ -7,8 +7,7 @@ interface Props {
 
 const { title, date, href } = Astro.props;
 
-const format = (d: Date | "Present") => {
-  if (d === "Present") return d;
+const format = (d: Date) => {
   return d.toLocaleDateString("en-US", {
     month: "short",
     year: "numeric",

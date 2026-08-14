@@ -23,7 +23,10 @@ const sortedPosts = allPosts
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, MAX_POSTS);
 
-const projects = (await getCollection("projects")).slice(0, MAX_PROJECTS);
+const allProjects = await getCollection("projects");
+const sortedProjects = allProjects
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, MAX_PROJECTS);
 ---
 
 <Layout title="Ujaan Das">
@@ -104,23 +107,16 @@ const projects = (await getCollection("projects")).slice(0, MAX_PROJECTS);
     <div
       class="grid grid-flow-col auto-cols-70 sm:auto-cols-80 gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden *:snap-start"
     >
-      <ProjectItem
-        title="Nix Homelab"
-        description="Declarative infrastructure for my personal servers."
-        href="https://github.com/ujaandas/nix-config"
-      />
-
-      <ProjectItem
-        title="Toy Compiler"
-        description="A lightweight compiler built in Go from scratch. Includes an AST viewer and custom lexer."
-        href="https://github.com/ujaandas/toy-compiler"
-      />
-
-      <ProjectItem
-        title="LLM Evaluator"
-        description="A testing suite for evaluating the deterministic properties of local LLMs."
-        href="https://github.com/ujaandas/llm-eval"
-      />
+      {
+        sortedProjects.map((item) => (
+          <ProjectItem
+            title={item.data.title}
+            date={item.data.date}
+            description={item.data.description}
+            href={`/blog/${item.id}`}
+          />
+        ))
+      }
     </div>
   </Section>
 
