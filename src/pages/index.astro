@@ -3,6 +3,14 @@ import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import meImage from "@/assets/me.webp";
 import Link from "@/components/Link.astro";
+import { getCollection } from "astro:content";
+import Section from "@/components/Section.astro";
+import WorkItem from "@/components/WorkItem.astro";
+import PostItem from "@/components/PostItem.astro";
+import ProjectItem from "@/components/ProjectItem.astro";
+
+const posts = await getCollection("posts");
+const projects = await getCollection("projects");
 ---
 
 <Layout title="Ujaan Das">
@@ -47,6 +55,67 @@ import Link from "@/components/Link.astro";
       </p>
     </div>
   </section>
+
+  <Section title="Experience">
+    <div class="flex flex-col gap-8">
+      <WorkItem
+        company="Tech Company Name"
+        role="Backend Engineer"
+        date="Aug 2024 — Present"
+      >
+        Maintained and scaled high-throughput microservices using Go and
+        PostgreSQL.
+      </WorkItem>
+
+      <WorkItem
+        company="Cool Startup"
+        role="Software Engineering Intern"
+        date="May 2023 — Aug 2023"
+      >
+        Built an internal LLM tooling dashboard using Next.js, Tailwind, and
+        tRPC.
+      </WorkItem>
+    </div>
+  </Section>
+
+  <Section title="Recent Writing" linkText="See all →" linkHref="/blog">
+    <div class="flex flex-col gap-4">
+      <PostItem
+        title="Verifying LLM outputs with formal methods"
+        date="Oct 24"
+        href="/blog/formal-methods"
+      />
+      <PostItem
+        title="Why I switched my entire homelab to NixOS"
+        date="Sep 12"
+        href="/blog/nixos-homelab"
+      />
+    </div>
+  </Section>
+
+  <Section title="Projects" linkText="See all →" linkHref="/projects">
+    <div
+      class="grid grid-flow-col auto-cols-70 sm:auto-cols-80 gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden *:snap-start"
+    >
+      <ProjectItem
+        title="Nix Homelab"
+        description="Declarative infrastructure for my personal servers."
+        href="https://github.com/ujaandas/nix-config"
+      />
+
+      <ProjectItem
+        title="Toy Compiler"
+        description="A lightweight compiler built in Go from scratch. Includes an AST viewer and custom lexer."
+        href="https://github.com/ujaandas/toy-compiler"
+      />
+
+      <ProjectItem
+        title="LLM Evaluator"
+        description="A testing suite for evaluating the deterministic properties of local LLMs."
+        href="https://github.com/ujaandas/llm-eval"
+      />
+    </div>
+  </Section>
 
   <div class="mt-8 flex gap-6">
     <Link

@@ -1,0 +1,26 @@
+---
+import Link from "./Link.astro";
+
+interface Props {
+  title: string;
+  linkText?: string;
+  linkHref?: string;
+  external?: boolean;
+}
+
+const { title, linkText, linkHref, external = false } = Astro.props;
+---
+
+<section class="mt-16 flex flex-col gap-6">
+  <div class="flex items-center justify-between">
+    <h2 class="text-2xl font-bold tracking-tight">{title}</h2>
+    {
+      linkText && linkHref && (
+        <Link href={linkHref} external={external} class="text-sm">
+          {linkText}
+        </Link>
+      )
+    }
+  </div>
+  <slot />
+</section>

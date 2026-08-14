@@ -1,0 +1,23 @@
+---
+interface Props {
+  title: string;
+  date: string;
+  href: string;
+}
+
+const { title, date, href } = Astro.props;
+---
+
+<a
+  href={href}
+  class="group flex justify-between items-center py-2 border-b border-zinc-200 dark:border-zinc-800"
+>
+  <span
+    class="text-zinc-800 dark:text-zinc-200 group-hover:text-blue-600 transition-colors"
+  >
+    {title}
+  </span>
+  <span class="text-zinc-500 text-sm shrink-0">
+    {date}
+  </span>
+</a>

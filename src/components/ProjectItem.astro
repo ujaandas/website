@@ -1,0 +1,28 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+}
+
+const { title, description, href } = Astro.props;
+---
+
+<a
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="group p-4 border border-zinc-200 dark:border-zinc-800 rounded-lg hover:border-blue-500 transition-colors flex flex-col"
+>
+  <h3
+    class="font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 transition-colors"
+  >
+    {title}{" "}
+    <span
+      class="inline-block transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+    >
+      &nearr;
+    </span>
+  </h3>
+  <p class="text-sm text-zinc-600 dark:text-zinc-400 mt-2">{description}</p>
+</a>
