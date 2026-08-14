@@ -4,6 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import meImage from "@/assets/me.webp";
 import Link from "@/components/Link.astro";
 import { getCollection } from "astro:content";
+import { Separator } from "@/components/ui/separator";
 import Section from "@/components/Section.astro";
 import WorkItem from "@/components/WorkItem.astro";
 import PostItem from "@/components/PostItem.astro";
@@ -95,7 +96,7 @@ const projects = await getCollection("projects");
 
   <Section title="Projects" linkText="See all →" linkHref="/projects">
     <div
-      class="grid grid-flow-col auto-cols-70 sm:auto-cols-80 gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden *:snap-start"
+      class="grid grid-flow-col auto-cols-70 sm:auto-cols-80 gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden *:snap-start"
     >
       <ProjectItem
         title="Nix Homelab"
@@ -117,12 +118,38 @@ const projects = await getCollection("projects");
     </div>
   </Section>
 
-  <div class="mt-8 flex gap-6">
+  <Section title="Get in touch">
+    <div class="flex flex-col gap-4">
+      <p class="text-zinc-700 dark:text-zinc-300">
+        Always happy to chat! You can find my resume and socials below:
+      </p>
+
+      <div class="flex flex-wrap items-center gap-6 sm:gap-8 mt-2">
+        <Link href="mailto:ujaandas03@gmail.com">Email</Link>
+
+        <Link
+          href="https://raw.githubusercontent.com/ujaandas/oojresume/refs/heads/main/out/UjaanDasResumeBackend.pdf"
+          external
+        >
+          Resume
+        </Link>
+        <Link href="https://github.com/ujaandas/" external>GitHub</Link>
+        <Link href="https://linkedin.com/in/ujaandas/" external>LinkedIn</Link>
+      </div>
+    </div>
+  </Section>
+
+  <footer
+    class="mt-20 pb-32 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400"
+  >
+    <p>&copy; {new Date().getFullYear()} Ujaan Das</p>
+
     <Link
-      href="https://raw.githubusercontent.com/ujaandas/oojresume/refs/heads/main/out/UjaanDasResumeBackend.pdf"
-      external>Resume</Link
+      href="https://github.com/ujaandas/ujaandas.github.io"
+      external
+      class="text-sm"
     >
-    <Link href="https://github.com/ujaandas/" external>GitHub</Link>
-    <Link href="https://linkedin.com/in/ujaandas/" external>LinkedIn</Link>
-  </div>
+      View Source
+    </Link>
+  </footer>
 </Layout>
