@@ -1,0 +1,60 @@
+---
+import { getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import Prose from "@/components/Prose.astro";
+import Link from "@/components/Link.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<Layout title={`${project.data.title} | Ujaan Das`}>
+  <article class="flex flex-col gap-8 mt-8">
+    {
+      project.data.image && (
+        <div class="aspect-video w-full overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
+          <Image
+            src={project.data.image}
+            alt={project.data.title}
+            class="h-full w-full object-cover"
+          />
+        </div>
+      )
+    }
+
+    <header class="flex flex-col gap-4">
+      <div
+        class="flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+      >
+        <h1
+          class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100"
+        >
+          {project.data.title}
+        </h1>
+        {
+          project.data.href && (
+            <Link href={project.data.href} external class="text-sm">
+              Visit Project
+            </Link>
+          )
+        }
+      </div>
+      <p class="text-lg text-zinc-600 dark:text-zinc-400">
+        {project.data.description}
+      </p>
+    </header>
+
+    <Prose>
+      <Content />
+    </Prose>
+  </article>
+</Layout>

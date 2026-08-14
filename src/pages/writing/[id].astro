@@ -1,0 +1,44 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Prose from "@/components/Prose.astro";
+import Link from "@/components/Link.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("writing");
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formatDate = (d: Date) => {
+  return d.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+---
+
+<Layout title={`${post.data.title} | Ujaan Das`}>
+  <article class="flex flex-col gap-8 mt-8">
+    <header class="flex flex-col gap-2 -mb-6">
+      <h1
+        class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100"
+      >
+        {post.data.title}
+      </h1>
+      <time class="text-zinc-500">
+        {formatDate(post.data.date)}
+      </time>
+    </header>
+
+    <Prose>
+      <Content />
+    </Prose>
+  </article>
+</Layout>
