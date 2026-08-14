@@ -30,115 +30,104 @@ const sortedProjects = allProjects
 ---
 
 <Layout title="Ujaan Das">
-  <section class="flex flex-col gap-4">
-    <div class="flex flex-col sm:flex-row sm:items-baseline gap-6">
-      <Image src={meImage} alt="Me!" loading="eager" class="w-32 h-32" />
-      <Link href="/me">
-        <h1 class="text-2xl font-bold tracking-tight">Hey, I'm Ujaan!</h1>
-      </Link>
-    </div>
-
-    <div class="flex flex-col gap-4">
-      <p class="text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
-        I like building stuff when I should probably be studying.
-      </p>
-      <p class="text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
-        I'm currently a post-grad student at the University of Warwick, where
-        I'm writing my dissertation on the applicability of formal methods to
-        LLM outputs.
-      </p>
-      <p class="text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
-        I'm interested in all things frontend, backend and AI. In my spare time,
-        I work on my homelab and read about compilers.
-      </p>
-      <p
-        class="text-base leading-relaxed text-zinc-500 dark:text-zinc-400 mt-2 italic"
-      >
-        (I also really like Nix!)
-      </p>
-    </div>
-  </section>
-
-  <Section title="Experience" linkText="See all →" linkHref="/work">
-    <div class="flex flex-col gap-8">
-      {
-        sortedWork.map((item) => (
-          <WorkItem
-            company={item.data.company}
-            role={item.data.role}
-            startDate={item.data.startDate}
-            endDate={item.data.endDate}
-          >
-            {item.data.description}
-          </WorkItem>
-        ))
-      }
-    </div>
-  </Section>
-
-  <Section title="Recent Writing" linkText="See all →" linkHref="/blog">
-    <div class="flex flex-col gap-4">
-      {
-        sortedPosts.map((item) => (
-          <PostItem
-            title={item.data.title}
-            date={item.data.date}
-            href={`/blog/${item.id}`}
-          />
-        ))
-      }
-    </div>
-  </Section>
-
-  <Section title="Projects" linkText="See all →" linkHref="/projects">
-    <div
-      class="grid grid-flow-col auto-cols-70 sm:auto-cols-80 gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden *:snap-start"
-    >
-      {
-        sortedProjects.map((item) => (
-          <ProjectItem
-            title={item.data.title}
-            date={item.data.date}
-            description={item.data.description}
-            href={item.data.href}
-          />
-        ))
-      }
-    </div>
-  </Section>
-
-  <Section title="Get in touch">
-    <div class="flex flex-col gap-4">
-      <p class="text-zinc-700 dark:text-zinc-300">
-        Always happy to chat! You can find my resume and socials below:
-      </p>
-
-      <div class="flex flex-wrap items-center gap-6 sm:gap-8 mt-2">
-        <Link href="mailto:ujaandas03@gmail.com">Email</Link>
-
-        <Link
-          href="https://raw.githubusercontent.com/ujaandas/oojresume/refs/heads/main/out/UjaanDasResumeBackend.pdf"
-          external
-        >
-          Resume
+  <div class="flex flex-col gap-16">
+    <section class="flex flex-col gap-4">
+      <div class="flex flex-col sm:flex-row sm:items-baseline gap-6">
+        <Image src={meImage} alt="Me!" loading="eager" class="w-32 h-32" />
+        <Link href="/me">
+          <h1 class="text-2xl font-bold tracking-tight">Hey, I'm Ujaan!</h1>
         </Link>
-        <Link href="https://github.com/ujaandas/" external>GitHub</Link>
-        <Link href="https://linkedin.com/in/ujaandas/" external>LinkedIn</Link>
       </div>
-    </div>
-  </Section>
 
-  <footer
-    class="mt-20 pb-32 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-zinc-500 dark:text-zinc-400"
-  >
-    <p>&copy; {new Date().getFullYear()} Ujaan Das</p>
+      <div class="flex flex-col gap-4">
+        <p class="text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
+          I like building stuff when I should probably be studying.
+        </p>
+        <p class="text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
+          I'm currently a post-grad student at the University of Warwick, where
+          I'm writing my dissertation on the applicability of formal methods to
+          LLM outputs.
+        </p>
+        <p class="text-lg leading-relaxed text-zinc-700 dark:text-zinc-300">
+          I'm interested in all things frontend, backend and AI. In my spare
+          time, I work on my homelab and read about compilers.
+        </p>
+        <p
+          class="text-base leading-relaxed text-zinc-500 dark:text-zinc-400 mt-2 italic"
+        >
+          (I also really like Nix!)
+        </p>
+      </div>
+    </section>
 
-    <Link
-      href="https://github.com/ujaandas/ujaandas.github.io"
-      external
-      class="text-sm"
-    >
-      View Source
-    </Link>
-  </footer>
+    <Section title="Experience" linkText="See all →" linkHref="/work">
+      <div class="flex flex-col gap-8">
+        {
+          sortedWork.map((item) => (
+            <WorkItem
+              company={item.data.company}
+              role={item.data.role}
+              startDate={item.data.startDate}
+              endDate={item.data.endDate}
+            >
+              {item.data.description}
+            </WorkItem>
+          ))
+        }
+      </div>
+    </Section>
+
+    <Section title="Recent Writing" linkText="See all →" linkHref="/blog">
+      <div class="flex flex-col gap-4">
+        {
+          sortedPosts.map((item) => (
+            <PostItem
+              title={item.data.title}
+              date={item.data.date}
+              href={`/blog/${item.id}`}
+            />
+          ))
+        }
+      </div>
+    </Section>
+
+    <Section title="Projects" linkText="See all →" linkHref="/projects">
+      <div
+        class="grid grid-flow-col auto-cols-70 sm:auto-cols-80 gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden *:snap-start"
+      >
+        {
+          sortedProjects.map((item) => (
+            <ProjectItem
+              title={item.data.title}
+              date={item.data.date}
+              description={item.data.description}
+              href={item.data.href}
+            />
+          ))
+        }
+      </div>
+    </Section>
+
+    <Section title="Get in touch">
+      <div class="flex flex-col gap-4">
+        <p class="text-zinc-700 dark:text-zinc-300">
+          Always happy to chat! You can find my resume and socials below:
+        </p>
+
+        <div class="flex flex-wrap items-center gap-6 sm:gap-8 mt-2">
+          <Link href="mailto:ujaandas03@gmail.com">Email</Link>
+
+          <Link
+            href="https://raw.githubusercontent.com/ujaandas/oojresume/refs/heads/main/out/UjaanDasResumeBackend.pdf"
+            external
+          >
+            Resume
+          </Link>
+          <Link href="https://github.com/ujaandas/" external>GitHub</Link>
+          <Link href="https://linkedin.com/in/ujaandas/" external>LinkedIn</Link
+          >
+        </div>
+      </div>
+    </Section>
+  </div>
 </Layout>
