@@ -22,13 +22,15 @@ const writing = defineCollection({
 });
 
 const projects = defineCollection({
-    loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx,mdoc}' }),
-    schema: z.object({
-        title: z.string(),
-        description: z.string(),
-        date: z.date(),
-        href: z.string(),
-    }),
+    loader: glob({ base: "./src/content/projects", pattern: "**/*.{md,mdx,mdoc}" }),
+    schema: ({ image }) =>
+        z.object({
+            title: z.string(),
+            description: z.string(),
+            date: z.date(),
+            href: z.string(),
+            image: image().optional(),
+        }),
 });
 
 export const collections = { work, writing, projects };

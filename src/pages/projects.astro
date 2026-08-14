@@ -1,0 +1,30 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import ProjectItem from "@/components/ProjectItem.astro";
+
+const allProjects = await getCollection("projects");
+const sortedProjects = allProjects.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<Layout title="Projects | Ujaan Das">
+  <div class="flex flex-col gap-8">
+    <h1 class="text-2xl font-bold tracking-tight">Projects</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {
+        sortedProjects.map((item) => (
+          <ProjectItem
+            title={item.data.title}
+            date={item.data.date}
+            description={item.data.description}
+            href={item.data.href}
+            image={item.data.image}
+          />
+        ))
+      }
+    </div>
+  </div>
+</Layout>
