@@ -2,10 +2,18 @@
 interface Props {
   company: string;
   role: string;
-  date: string;
+  startDate: Date;
+  endDate: Date | "Present";
 }
 
-const { company, role, date } = Astro.props;
+const { company, role, startDate, endDate } = Astro.props;
+
+const format = (d: Date | "Present") => {
+  if (d === "Present") return d;
+  return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+};
+
+const dateString = `${format(startDate)} – ${format(endDate)}`;
 ---
 
 <div class="flex flex-col gap-2">
@@ -19,7 +27,7 @@ const { company, role, date } = Astro.props;
       >
     </h3>
     <span class="text-sm text-zinc-500 dark:text-zinc-400 shrink-0">
-      {date}
+      {dateString}
     </span>
   </div>
   <p class="text-zinc-700 dark:text-zinc-300">

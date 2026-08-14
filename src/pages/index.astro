@@ -9,8 +9,17 @@ import WorkItem from "@/components/WorkItem.astro";
 import PostItem from "@/components/PostItem.astro";
 import ProjectItem from "@/components/ProjectItem.astro";
 
-const posts = await getCollection("posts");
-const projects = await getCollection("projects");
+const MAX_WORK = 3;
+const MAX_POSTS = 3;
+const MAX_PROJECTS = 4;
+
+const allWork = await getCollection("work");
+const sortedWork = allWork
+  .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf())
+  .slice(0, MAX_WORK);
+
+const posts = (await getCollection("posts")).slice(0, MAX_POSTS);
+const projects = (await getCollection("projects")).slice(0, MAX_PROJECTS);
 ---
 
 <Layout title="Ujaan Das">
@@ -56,25 +65,20 @@ const projects = await getCollection("projects");
     </div>
   </section>
 
-  <Section title="Experience">
+  <Section title="Experience" linkText="See all →" linkHref="/work">
     <div class="flex flex-col gap-8">
-      <WorkItem
-        company="Tech Company Name"
-        role="Backend Engineer"
-        date="Aug 2024 — Present"
-      >
-        Maintained and scaled high-throughput microservices using Go and
-        PostgreSQL.
-      </WorkItem>
-
-      <WorkItem
-        company="Cool Startup"
-        role="Software Engineering Intern"
-        date="May 2023 — Aug 2023"
-      >
-        Built an internal LLM tooling dashboard using Next.js, Tailwind, and
-        tRPC.
-      </WorkItem>
+      {
+        sortedWork.map((item) => (
+          <WorkItem
+            company={item.data.company}
+            role={item.data.role}
+            startDate={item.data.startDate}
+            endDate={item.data.endDate}
+          >
+            {item.body}
+          </WorkItem>
+        ))
+      }
     </div>
   </Section>
 
