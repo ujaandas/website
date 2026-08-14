@@ -5,15 +5,17 @@ interface Props {
   class?: string;
 }
 
-const { href, external = false, class: className = "" } = Astro.props;
+const { href, class: className = "" } = Astro.props;
+
+const isExternal = Astro.props.external ?? href.startsWith("http");
 ---
 
 <a
   href={href}
-  target={external ? "_blank" : undefined}
-  rel={external ? "noopener noreferrer" : undefined}
+  target={isExternal ? "_blank" : undefined}
+  rel={isExternal ? "noopener noreferrer" : undefined}
   class={`
-    group text-lg font-medium 
+    group font-medium 
     text-blue-900 dark:text-indigo-400 
     hover:text-blue-800 dark:hover:text-indigo-300 
     transition-colors duration-100 ease-out
@@ -22,5 +24,5 @@ const { href, external = false, class: className = "" } = Astro.props;
   `}
 >
   <slot />
-  {external && <span> &nearr;</span>}
+  {isExternal && <span class="whitespace-nowrap"> &nearr;</span>}
 </a>
