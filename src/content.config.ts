@@ -9,6 +9,7 @@ const work = defineCollection({
         role: z.string(),
         startDate: z.date(),
         endDate: z.union([z.date(), z.literal("Present")]),
+        description: z.string(),
     }),
 });
 
