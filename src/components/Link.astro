@@ -15,9 +15,9 @@ const isExternal = Astro.props.external ?? href.startsWith("http");
   target={isExternal ? "_blank" : undefined}
   rel={isExternal ? "noopener noreferrer" : undefined}
   class={`
-    group font-medium 
-    text-blue-900 dark:text-indigo-400 
-    hover:text-blue-800 dark:hover:text-indigo-300 
+    group type-meta font-medium
+    text-blue-900 dark:text-indigo-400
+    hover:text-blue-800 dark:hover:text-indigo-300
     transition-colors duration-100 ease-out
     underline decoration-2 underline-offset-4 decoration-transparent hover:decoration-current
     ${className}

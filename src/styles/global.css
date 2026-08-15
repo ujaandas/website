@@ -127,9 +127,39 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground text-base leading-7;
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer components {
+  .type-page-title {
+    @apply text-3xl sm:text-4xl font-bold tracking-tight;
+  }
+
+  .type-section-title {
+    @apply text-2xl sm:text-3xl font-bold tracking-tight;
+  }
+
+  .type-card-title {
+    @apply text-lg sm:text-xl font-semibold tracking-tight;
+  }
+
+  .type-body {
+    @apply text-base leading-7;
+  }
+
+  .type-meta {
+    @apply text-sm leading-6;
+  }
+
+  .type-caption {
+    @apply text-sm leading-6;
+  }
+
+  .type-nav {
+    @apply text-sm leading-6 font-medium;
   }
 }

@@ -13,7 +13,7 @@ const { title, linkText, linkHref, external = false } = Astro.props;
 
 <section class="mt-8 flex flex-col gap-6">
   <div class="flex items-center justify-between">
-    <h2 class="text-xl font-bold tracking-tight">{title}</h2>
+    <h2 class="type-section-title">{title}</h2>
     {
       linkText && linkHref && (
         <Link href={linkHref} external={external}>
