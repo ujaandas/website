@@ -1,0 +1,25 @@
+---
+// src/pages/me.astro
+import { getEntry, render } from "astro:content";
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import Prose from "@/components/Prose.astro";
+import Link from "@/components/Link.astro";
+import meImage from "@/assets/me.webp";
+
+const page = await getEntry("pages", "me");
+
+if (!page) {
+  throw new Error("About Me page content not found in src/content/pages/me");
+}
+
+const { Content } = await render(page);
+---
+
+<Layout title={`${page.data.title} | Ujaan Das`}>
+  <main class="flex flex-col gap-8 mt-8">
+    <Prose>
+      <Content />
+    </Prose>
+  </main>
+</Layout>
