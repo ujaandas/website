@@ -1,11 +1,7 @@
 ---
-// src/pages/me.astro
 import { getEntry, render } from "astro:content";
-import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import Prose from "@/components/Prose.astro";
-import Link from "@/components/Link.astro";
-import meImage from "@/assets/me.webp";
 
 const page = await getEntry("pages", "me");
 

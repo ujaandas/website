@@ -2,7 +2,6 @@
 import { getCollection, render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Prose from "@/components/Prose.astro";
-import Link from "@/components/Link.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("writing");
