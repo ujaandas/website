@@ -1,7 +1,7 @@
 import { config, fields, collection, singleton } from "@keystatic/core";
 
 export default config({
-    storage: process.env.NODE_ENV === "production"
+    storage: import.meta.env.PROD
         ? { kind: "github", repo: "ujaandas/website" }
         : { kind: "local" },
     singletons: {
