@@ -8,7 +8,7 @@ const work = defineCollection({
         company: z.string(),
         role: z.string(),
         startDate: z.date(),
-        endDate: z.union([z.date(), z.literal("Present")]),
+        endDate: z.union([z.coerce.date(), z.literal("Present")]),
         description: z.string(),
     }),
 });
