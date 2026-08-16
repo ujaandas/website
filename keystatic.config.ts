@@ -1,9 +1,7 @@
 import { config, fields, collection, singleton } from "@keystatic/core";
 
 export default config({
-    storage: import.meta.env.PROD
-        ? { kind: "github", repo: "ujaandas/website" }
-        : { kind: "local" },
+    storage: { kind: "github", repo: "ujaandas/website" },
     singletons: {
         me: singleton({
             label: "About Me Page",
