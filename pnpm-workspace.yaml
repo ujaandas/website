@@ -4,3 +4,6 @@ packages:
 allowBuilds:
   esbuild: true
   sharp: true
+
+patchedDependencies:
+  "@keystatic/astro": patches/@keystatic__astro.patch
