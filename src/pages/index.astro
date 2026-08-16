@@ -34,9 +34,14 @@ const sortedProjects = allProjects
     <section class="flex flex-col gap-4">
       <div class="flex flex-col sm:flex-row sm:items-baseline gap-6">
         <Image src={meImage} alt="Me!" loading="eager" class="w-32 h-32" />
-        <Link href="/me">
+        <!-- <Link href="/me">
           <h1 class="text-2xl font-bold tracking-tight">Hey, I'm Ujaan!</h1>
-        </Link>
+        </Link> -->
+        <h1
+          class="text-2xl font-bold tracking-tight text-zinc-700 dark:text-zinc-300"
+        >
+          Hey, I'm Ujaan!
+        </h1>
       </div>
 
       <div class="flex flex-col gap-4">
@@ -91,7 +96,7 @@ const sortedProjects = allProjects
       </div>
     </Section>
 
-    <Section title="Projects" linkText="See all →" linkHref="/projects">
+    <!-- <Section title="Projects" linkText="See all →" linkHref="/projects">
       <div
         class="grid grid-flow-col auto-cols-70 sm:auto-cols-80 gap-4 overflow-x-auto snap-x snap-mandatory scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden *:snap-start"
       >
@@ -106,7 +111,7 @@ const sortedProjects = allProjects
           ))
         }
       </div>
-    </Section>
+    </Section> -->
 
     <Section title="Get in touch">
       <div class="flex flex-col gap-4">
