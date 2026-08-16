@@ -1,3 +1,6 @@
+# secrets
+.dev.vars
+
 # direnv/nix
 .direnv/
 result/
