@@ -44,16 +44,14 @@ const { title } = Astro.props;
     </script>
   </head>
 
-  <body
-    class="min-h-screen antialiased transition-colors duration-300"
-  >
+  <body class="min-h-screen antialiased transition-colors duration-300">
     <div class="max-w-3xl mx-auto px-6 lg:px-8 flex flex-col min-h-screen">
       <Header />
       <main class="grow py-6">
         <slot />
       </main>
       <footer
-        class="mt-20 pb-32 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm leading-6 text-zinc-500 dark:text-zinc-400"
+        class="mt-20 pb-32 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 leading-6 text-zinc-500 dark:text-zinc-400"
       >
         <p>&copy; {new Date().getFullYear()} Ujaan Das</p>
 

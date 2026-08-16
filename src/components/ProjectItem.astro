@@ -45,7 +45,7 @@ const format = (d: Date) => {
   <div class="flex flex-col flex-1 p-4 gap-2">
     <div class="flex items-baseline justify-between gap-2">
       <h3
-        class="text-lg sm:text-xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors"
+        class="text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-100 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors"
       >
         {title}{" "}
         <span
@@ -57,14 +57,14 @@ const format = (d: Date) => {
 
       {
         date && (
-          <span class="text-sm leading-6 text-zinc-500 dark:text-zinc-400 shrink-0">
+          <span class="text-lg leading-6 text-zinc-500 dark:text-zinc-400 shrink-0">
             {format(date)}
           </span>
         )
       }
     </div>
 
-    <p class="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+    <p class="text-lg leading-6 text-zinc-600 dark:text-zinc-400">
       {description}
     </p>
   </div>
