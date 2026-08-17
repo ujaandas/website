@@ -14,4 +14,11 @@
 		"enabled": true
 	},
 	"keep_vars": true,
+	"secrets": {
+		"required": [
+			"KEYSTATIC_GITHUB_CLIENT_ID",
+			"KEYSTATIC_GITHUB_CLIENT_SECRET",
+			"KEYSTATIC_SECRET"
+		],
+	},
 }
