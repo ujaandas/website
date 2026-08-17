@@ -1,5 +1,6 @@
 # secrets
 .dev.vars
+.env
 
 # direnv/nix
 .direnv/
