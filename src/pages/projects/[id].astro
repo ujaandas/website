@@ -19,18 +19,6 @@ const { Content } = await render(project);
 
 <Layout title={`${project.data.title} | Ujaan Das`}>
   <article class="flex flex-col gap-8 mt-8">
-    {
-      project.data.image && (
-        <div class="aspect-video w-full overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
-          <Image
-            src={project.data.image}
-            alt={project.data.title}
-            class="h-full w-full object-cover"
-          />
-        </div>
-      )
-    }
-
     <header class="flex flex-col gap-4">
       <div
         class="flex flex-col sm:flex-row sm:items-center justify-between gap-2"
@@ -51,6 +39,17 @@ const { Content } = await render(project);
       <p class="text-lg leading-7 text-zinc-600 dark:text-zinc-400">
         {project.data.description}
       </p>
+      {
+        project.data.image && (
+          <div class="aspect-video w-full overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800">
+            <Image
+              src={project.data.image}
+              alt={project.data.title}
+              class="h-full w-full object-cover"
+            />
+          </div>
+        )
+      }
     </header>
 
     <Prose>
