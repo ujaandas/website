@@ -22,7 +22,6 @@ const sortedProjects = allProjects.sort(
         sortedProjects.map((item) => (
           <ProjectItem
             title={item.data.title}
-            date={item.data.date}
             description={item.data.description}
             href={`/projects/${item.id}`}
             image={item.data.image}
