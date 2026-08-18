@@ -4,20 +4,10 @@ description: A compiler for better LLM structured outputs.
 date: 2026-08-18
 href: https://github.com/ujaandas/invariants
 ---
-For the uninitiated, structured outputs/decoding refers to how LLMs "enforce" a schema that they have been told to adhere to - an OpenAPI spec, a JSON schema, etc...
-
-Existing structured decoding libraries (like Outlines or Guidance) rely on Context-Free Grammars (CFGs) and Finite State Machines (FSMs). While they guarantee surface syntax - like matching JSON braces or enforcing field types - they are fundamentally incapable of validating **Context-Sensitive Invariants (CSIs)**.
-
-A CFG cannot enforce cross-field logic, like verifying that an assigned IP address falls within a declared subnet or ensuring that `total_price == unit_price * quantity`. When these rules break in agentic workflows or infrastructure provisioning, systems have to fall back on high-latency **post-hoc rejection sampling**: waiting for the full payload to generate, catching the runtime failure downstream, and prompting a costly retry.
-
-### How `invariants` solves that problem
-
 **invariants** moves formal semantic verification directly into the token generation loop in C++. By validating partial generation state against schema invariants at each step, illegal tokens are pruned before they are ever sampled.
 
 In essence, it is a compiler and inference-time verification engine designed to enforce deterministic, context-sensitive constraints during autoregressive LLM generation.
 
 - **Custom DSL:** A schema definition language for declaring cross-field rules, dynamic ranges, and operational invariants.
-- **Compiler Pipeline:** Uses multi-stage tree walks and targeted codegen passes to turn schema constraints into fast evaluation routines for the sampler.
-- **Runtime Integration:** Evaluates constraints during the forward pass with minimal per-token overhead.
-
-> *(Note: While a custom bytecode VM was part of the original design, the current multi-pass tree walk and codegen architecture handles evaluation cleanly. A dedicated VM remains on the roadmap if performance becomes a bottleneck).*
+- **Compiler pipeline:** Uses multi-stage tree walks and targeted codegen passes to turn schema constraints into fast evaluation routines for the sampler.
+- **Runtime integration:** Evaluates constraints during the forward pass with minimal per-token overhead.
