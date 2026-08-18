@@ -1,8 +1,6 @@
 ---
-title: 'Invariants: a compiler for better LLM structured outputs'
-description: >-
-  An inference-time verification engine designed to enforce deterministic,
-  context-sensitive constraints during autoregressive LLM generation.
+title: Invariants
+description: A compiler for better LLM structured outputs.
 date: 2026-08-18
 href: https://github.com/ujaandas/invariants
 ---
@@ -15,6 +13,8 @@ A CFG cannot enforce cross-field logic, like verifying that an assigned IP addre
 ### How `invariants` solves that problem
 
 **invariants** moves formal semantic verification directly into the token generation loop in C++. By validating partial generation state against schema invariants at each step, illegal tokens are pruned before they are ever sampled.
+
+In essence, it is a compiler and inference-time verification engine designed to enforce deterministic, context-sensitive constraints during autoregressive LLM generation.
 
 - **Custom DSL:** A schema definition language for declaring cross-field rules, dynamic ranges, and operational invariants.
 - **Compiler Pipeline:** Uses multi-stage tree walks and targeted codegen passes to turn schema constraints into fast evaluation routines for the sampler.
