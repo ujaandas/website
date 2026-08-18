@@ -10,27 +10,3 @@ image: ../../assets/images/projects/parity/image.png
 Getting a project running on a new machine usually means one of two headaches: spending an afternoon debugging mismatched local SDKs, or accepting that modern editors will happily eat 1.5GB of RAM and 200 background threads just to open a text file.
 
 **parity** is built to tackle both problems. It couples a native, low-overhead C++ application with the hermetic reproducibility of Nix, treating the development environment as an explicit part of the codebase rather than a mutable global state.
-
-### The main idea
-
-Instead of relying on whatever compilers, formatters, or LSPs happen to be installed globally on your machine, `parity` uses Nix to instantiate an isolated, project-defined environment the moment you open a repository.
-
-The resulting environment is completely deterministic:
-
-- **Identical Toolchains:** Local developers, CI pipelines, and autonomous AI agents interact with the exact same binary versions and compiler flags.
-- **Zero Global Drift:** No conflicting system libraries, broken PATH configurations, or version collisions between distinct projects.
-- **Instant Onboarding:** Clone the repository and immediately get the precise LSP, linters, and runtime dependencies configured for that specific codebase.
-
-A single `flake.nix` defined for the project can define what every developer, agent and CI pipeline's stack looks like in the context of that project.
-
-### Native by design
-
-Most contemporary editors are Chromium wrappers running a JavaScript runtime. While that makes plugin development accessible, it introduces massive resource bloat and unpredictable latency.
-
-`parity` takes a deliberately contrarian architectural route. It's written in modern C++ and Qt6/QtQuick, with a focus on speed, efficiency, and keeping resource usage predictable.
-
-On average, it uses <100MB of memory across <12 threads, whereas VSCode uses >1GB of memory across >200 threads!\
-
-### Future work
-
-Making an IDE to rival VSCode or Zed is obviously a gargantuan task. `parity` is always being worked on and improved whenever/wherever possible.
