@@ -8,6 +8,7 @@ import Section from "@/components/Section.astro";
 import WorkItem from "@/components/WorkItem.astro";
 import WritingItem from "@/components/WritingItem.astro";
 import ProjectItem from "@/components/ProjectItem.astro";
+import Quote from "@/components/Quote.astro";
 
 const MAX_WORK = 3;
 const MAX_POSTS = 3;
@@ -27,6 +28,11 @@ const allProjects = await getCollection("projects");
 const sortedProjects = allProjects
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, MAX_PROJECTS);
+
+const dailyQuote = {
+  quote: "I also really like Nix!",
+  author: "Me",
+};
 ---
 
 <Layout title="Ujaan Das">
@@ -57,11 +63,7 @@ const sortedProjects = allProjects
           I'm interested in all things frontend, backend and AI. In my spare
           time, I work on my homelab and read about compilers.
         </p>
-        <p
-          class="text-lg leading-6 text-zinc-500 dark:text-zinc-400 mt-2 italic"
-        >
-          (I also really like Nix!)
-        </p>
+        <Quote quote="I also really like Nix!" />
       </div>
     </section>
 
