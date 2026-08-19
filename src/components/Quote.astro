@@ -1,56 +1,22 @@
 ---
 interface Props {
-  quote?: string;
+  quote: string;
   author?: string;
 }
 
 const { quote, author } = Astro.props;
-
-const quotes = [
-  {
-    quote: "Simplicity is prerequisite for reliability.",
-    author: "Edsger W. Dijkstra",
-  },
-  {
-    quote:
-      "Programs must be written for people to read, and only incidentally for machines to execute.",
-    author: "Harold Abelson",
-  },
-  {
-    quote: "I also really like Nix!",
-    // No author -> omitted figcaption
-  },
-  {
-    quote:
-      "There are two ways of constructing a software design: One way is to make it so simple that there are obviously no deficiencies, and the other way is to make it so complicated that there are no obvious deficiencies.",
-    author: "C.A.R. Hoare",
-  },
-];
-
-// Fallback to a deterministic daily quote if no props are passed
-const dayOfYear = Math.floor(
-  (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) /
-    1000 /
-    60 /
-    60 /
-    24,
-);
-
-const dailyQuote = quote
-  ? { quote, author }
-  : quotes[dayOfYear % quotes.length];
 ---
 
 <figure class="border-l-2 border-zinc-300 dark:border-zinc-700 pl-4 py-1 my-2">
   <blockquote
     class="text-lg italic leading-relaxed text-zinc-600 dark:text-zinc-400"
   >
-    &ldquo;{dailyQuote.quote}&rdquo;
+    &ldquo;{quote}&rdquo;
   </blockquote>
   {
-    dailyQuote.author && (
+    author && (
       <figcaption class="mt-1.5 text-base text-zinc-500 dark:text-zinc-400">
-        &mdash; {dailyQuote.author}
+        &mdash; {author}
       </figcaption>
     )
   }
