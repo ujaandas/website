@@ -3,16 +3,27 @@ import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 
 export function ModeToggle() {
-    const [theme, setThemeState] = useState(false)
+    const [isDark, setIsDark] = useState(false)
 
     useEffect(() => {
-        setThemeState(document.documentElement.classList.contains("dark"))
+        const syncTheme = () => {
+            setIsDark(document.documentElement.classList.contains("dark"))
+        }
+
+        syncTheme()
+        document.addEventListener("astro:after-swap", syncTheme)
+
+        return () => {
+            document.removeEventListener("astro:after-swap", syncTheme)
+        }
     }, [])
 
     const toggleTheme = () => {
-        const nextTheme = !theme;
-        setThemeState(nextTheme);
-        document.documentElement.classList[nextTheme ? "add" : "remove"]("dark");
+        const nextDark = !document.documentElement.classList.contains("dark")
+
+        document.documentElement.classList.toggle("dark", nextDark)
+        localStorage.setItem("theme", nextDark ? "dark" : "light")
+        setIsDark(nextDark)
     }
 
     return (

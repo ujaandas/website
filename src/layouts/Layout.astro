@@ -19,41 +19,37 @@ const { title } = Astro.props;
     <title>{title}</title>
 
     <script is:inline>
-      const getThemePreference = () => {
-        if (
-          typeof localStorage !== "undefined" &&
-          localStorage.getItem("theme")
-        ) {
-          return localStorage.getItem("theme");
-        }
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-      };
-      const isDark = getThemePreference() === "dark";
-      document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+      const applyTheme = () => {
+        const storedTheme =
+          typeof localStorage !== "undefined"
+            ? localStorage.getItem("theme")
+            : null;
+        const systemDark = window.matchMedia(
+          "(prefers-color-scheme: dark)",
+        ).matches;
+        const isDark = storedTheme ? storedTheme === "dark" : systemDark;
 
-      if (typeof localStorage !== "undefined") {
-        const observer = new MutationObserver(() => {
-          const isDark = document.documentElement.classList.contains("dark");
-          localStorage.setItem("theme", isDark ? "dark" : "light");
-        });
-        observer.observe(document.documentElement, {
-          attributes: true,
-          attributeFilter: ["class"],
-        });
-      }
+        document.documentElement.classList.toggle("dark", isDark);
+      };
+
+      applyTheme();
+
+      document.addEventListener("astro:before-swap", (event) => {
+        const isDark = document.documentElement.classList.contains("dark");
+        event.newDocument.documentElement.classList.toggle("dark", isDark);
+      });
     </script>
     <ClientRouter />
   </head>
 
   <body class="min-h-screen antialiased transition-colors duration-300">
     <div class="max-w-3xl mx-auto px-6 lg:px-8 flex flex-col min-h-screen">
-      <Header />
+      <Header transition:persist />
       <main class="grow py-6" transition:animate={fade({ duration: "0.1s" })}>
         <slot />
       </main>
       <footer
+        transition:persist
         class="text-sm mt-20 pb-32 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 leading-6 text-zinc-500 dark:text-zinc-400"
       >
         <p>&copy; {new Date().getFullYear()} Ujaan Das</p>
