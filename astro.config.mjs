@@ -12,6 +12,11 @@ export default defineConfig({
   site: "https://www.ujaan.me",
   vite: {
     plugins: [tailwindcss()],
+    ssr: {
+      optimizeDeps: {
+        exclude: ['@keystatic/core', '@keystatic/astro']
+      }
+    }
   },
   adapter: cloudflare(),
   integrations: [react(), markdoc(), keystatic()],
