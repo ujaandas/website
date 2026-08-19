@@ -29,10 +29,20 @@ const sortedProjects = allProjects
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, MAX_PROJECTS);
 
-const dailyQuote = {
-  quote: "I also really like Nix!",
-  author: "Me",
-};
+const allQuotes = await getCollection("quotes");
+
+const dayOfYear = Math.floor(
+  (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) /
+    1000 /
+    60 /
+    60 /
+    24,
+);
+
+const dailyQuote =
+  allQuotes.length > 0
+    ? allQuotes[(dayOfYear * 37) % allQuotes.length].data
+    : { quote: "I also really like Nix!" };
 ---
 
 <Layout title="Ujaan Das">
@@ -63,7 +73,7 @@ const dailyQuote = {
           I'm interested in all things frontend, backend and AI. In my spare
           time, I work on my homelab and read about compilers.
         </p>
-        <Quote quote="I also really like Nix!" />
+        <Quote quote={dailyQuote.quote} author={dailyQuote.author} />
       </div>
     </section>
 
