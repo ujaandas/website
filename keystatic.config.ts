@@ -19,6 +19,16 @@ export default config({
         }),
     },
     collections: {
+        quotes: collection({
+            label: "Quotes",
+            slugField: "quote",
+            path: "src/content/quotes/*",
+            format: { data: "yaml" },
+            schema: {
+                quote: fields.slug({ name: { label: "Quote" } }),
+                author: fields.text({ label: "Author (Leave blank if self)" }),
+            },
+        }),
         writing: collection({
             label: "Writing",
             slugField: "title",
