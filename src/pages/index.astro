@@ -30,18 +30,9 @@ const sortedProjects = allProjects
   .slice(0, MAX_PROJECTS);
 
 const allQuotes = await getCollection("quotes");
-
-const dayOfYear = Math.floor(
-  (Date.now() - new Date(new Date().getFullYear(), 0, 0).getTime()) /
-    1000 /
-    60 /
-    60 /
-    24,
-);
-
 const dailyQuote =
   allQuotes.length > 0
-    ? allQuotes[(dayOfYear * 37) % allQuotes.length].data
+    ? allQuotes[Math.floor(Math.random() * allQuotes.length)].data
     : { quote: "I also really like Nix!" };
 ---
 
