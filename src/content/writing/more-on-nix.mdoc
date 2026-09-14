@@ -25,7 +25,7 @@ A derivation describes:
 - what commands should run to build it
 - what the final output should look like
 
-It's basically a recipe. Once you've written a derivation, Nix now has everything it needs to build your package.
+It's basically a recipe, and once you've written one, Nix has everything it needs to build your package.
 
 ### Hashing
 
@@ -41,15 +41,11 @@ That includes things like:
 - patches
 - build flags
 
-Basically, if it could affect the output, it goes into the hash.
-
-This hash becomes the identity of the build.
+Basically, if it could affect the output, it goes into the hash, and that hash becomes the identity of the build.
 
 ### Building
 
-Once the derivation has been hashed, Nix creates an isolated build environment.
-
-This is one of the biggest differences between Nix and traditional package managers.
+Once the derivation has been hashed, Nix creates an isolated build environment - this is honestly one of the biggest differences between Nix and traditional package managers.
 
 Normally, builds end up depending on all kinds of accidental garbage from the host system:
 
@@ -58,19 +54,13 @@ Normally, builds end up depending on all kinds of accidental garbage from the ho
 - environment variables
 - leftover packages from years ago
 
-Nix tries very hard to prevent this (you can circumvent it).
-
-Instead, builds only see the dependencies explicitly declared in the derivation.
-
-If you forgot to declare something, the build fails.
+Nix tries very hard to prevent this (you can circumvent it, obviously). Builds only see the dependencies explicitly declared in the derivation, and if you forgot to declare something, the build just fails.
 
 ### Storing
 
-If the build succeeds, the result gets placed into `/nix/store`.
+If the build succeeds, the result gets placed into `/nix/store`, and nothing in there ever gets modified in-place.
 
-Importantly, nothing in the store gets modified in-place.
-
-Nix doesn't "upgrade" packages the traditional way. Instead, every build exists independently.
+Nix doesn't "upgrade" packages the traditional way. Every build just exists independently.
 
 That means you can have:
 
@@ -84,13 +74,9 @@ all installed simultaneously without them stepping on each other.
 
 When you "install" a package with Nix, you're usually not copying files around your system.
 
-Instead, Nix creates symlinks pointing to packages inside `/nix/store`.
+Instead, Nix creates symlinks pointing to packages inside `/nix/store`. Your environment ends up being a pile of symlinks pointing at stuff that never changes underneath you.
 
-Your environment is basically a carefully constructed forest of references to immutable build outputs.
-
-This also makes rollbacks incredibly cheap.
-
-Switching generations often just means changing which symlinks are active.
+This also makes rollbacks incredibly cheap - switching generations often just means changing which symlinks are active.
 
 ### Caching
 
@@ -102,8 +88,4 @@ If a matching hash exists in a binary cache, Nix just downloads the pre-built re
 
 Which means someone else has already turned their laptop into a jet engine compiling Chromium for you.
 
-At the end of the day, most of Nix boils down to one idea:
-
-> If builds are fully described and fully isolated, they become predictable.
-
-Everything else is mostly implementation details, increasingly concerning amounts of bracket syntax, and occasional encounters with the Nix language parser.
+Most of Nix really just comes down to: if builds are fully described and fully isolated, they become predictable. Everything else is mostly implementation details, increasingly concerning amounts of bracket syntax, and occasional encounters with the Nix language parser.
