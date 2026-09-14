@@ -1,4 +1,6 @@
 ---
+export const prerender = false;
+
 import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import meImage from "@/assets/me.webp";
@@ -30,7 +32,7 @@ const sortedProjects = allProjects
   .slice(0, MAX_PROJECTS);
 
 const allQuotes = await getCollection("quotes");
-const dailyQuote =
+const randomQuote =
   allQuotes.length > 0
     ? allQuotes[Math.floor(Math.random() * allQuotes.length)].data
     : { quote: "I also really like Nix!" };
@@ -64,7 +66,7 @@ const dailyQuote =
           I'm interested in all things frontend, backend and AI. In my spare
           time, I work on my homelab and read about compilers.
         </p>
-        <Quote quote={dailyQuote.quote} author={dailyQuote.author} />
+        <Quote quote={randomQuote.quote} author={randomQuote.author} />
       </div>
     </section>
 
