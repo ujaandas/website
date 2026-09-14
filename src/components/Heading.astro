@@ -1,0 +1,27 @@
+---
+interface Props {
+  level: 1 | 2 | 3 | 4 | 5 | 6;
+  id?: string;
+}
+
+const { level, id } = Astro.props;
+const Tag = `h${level}` as "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+---
+
+<Tag id={id} class="group scroll-mt-24 font-bold">
+  {
+    id ? (
+      <a href={`#${id}`} class="no-underline text-inherit hover:text-inherit">
+        <slot />
+        <span
+          class="ml-2 text-zinc-400 dark:text-zinc-600 opacity-0 group-hover:opacity-100 transition-opacity"
+          aria-hidden="true"
+        >
+          #
+        </span>
+      </a>
+    ) : (
+      <slot />
+    )
+  }
+</Tag>
