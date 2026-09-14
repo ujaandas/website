@@ -49,4 +49,18 @@ const quotes = defineCollection({
     }),
 });
 
-export const collections = { work, writing, projects, pages, quotes };
+const reads = defineCollection({
+    loader: glob({ base: "./src/content/reads", pattern: "**/*.{yaml,json,md,mdoc}" }),
+    schema: z.object({
+        title: z.string(),
+        author: z.string().optional(),
+        status: z.enum(["reading", "read"]),
+        shelf: z.string(),
+        recommend: z.boolean().optional(),
+        cover: z.string().optional(),
+        date: z.date().optional(),
+        url: z.string().optional(),
+    }),
+});
+
+export const collections = { work, writing, projects, pages, quotes, reads };

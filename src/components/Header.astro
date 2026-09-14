@@ -3,27 +3,29 @@ import { ModeToggle } from "./ModeToggle";
 import Link from "./Link.astro";
 ---
 
-<header
-  class="sticky top-0 z-50 py-4 flex items-center justify-between bg-background/80 backdrop-blur-sm"
->
-  <a href="/" aria-label="Home" class="flex items-center gap-2 group">
-    <img
-      src="/favicon.ico"
-      alt="Logo"
-      class="w-8 h-8 group-hover:scale-110 transition-transform"
-    />
-  </a>
+<header class="sticky top-0 z-50 bg-background/80 backdrop-blur-sm">
+  <div
+    class="max-w-3xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between"
+  >
+    <a href="/" aria-label="Home" class="flex items-center gap-2 group">
+      <img
+        src="/favicon.ico"
+        alt="Logo"
+        class="w-8 h-8 group-hover:scale-110 transition-transform"
+      />
+    </a>
 
-  <div class="flex items-center gap-6">
-    <nav
-      class="hidden sm:flex items-center gap-5 text-lg leading-6 font-medium text-zinc-600 dark:text-zinc-400"
-    >
-      <Link href="/work">work</Link>
-      <Link href="/writing">writing</Link>
-      <Link href="/projects">projects</Link>
-      <!-- <Link href="/reads">reads</Link> -->
-    </nav>
+    <div class="flex items-center gap-6">
+      <nav
+        class="hidden sm:flex items-center gap-5 text-lg leading-6 font-medium text-zinc-600 dark:text-zinc-400"
+      >
+        <Link href="/work">work</Link>
+        <Link href="/writing">writing</Link>
+        <Link href="/projects">projects</Link>
+        <!-- <Link href="/reads">reads</Link> -->
+      </nav>
 
-    <ModeToggle client:load />
+      <ModeToggle client:load />
+    </div>
   </div>
 </header>

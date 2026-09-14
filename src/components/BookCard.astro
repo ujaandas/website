@@ -1,0 +1,67 @@
+---
+interface Props {
+  title: string;
+  author: string;
+  cover?: string;
+  recommend?: boolean;
+  url?: string;
+}
+
+const { title, author, cover, recommend, url } = Astro.props;
+const Wrapper = url ? "a" : "div";
+const wrapperProps = url
+  ? { href: url, target: "_blank", rel: "noopener noreferrer" }
+  : {};
+---
+
+<Wrapper {...wrapperProps} class="group flex flex-col gap-2">
+  <div
+    class="relative aspect-2/3 w-full overflow-hidden rounded-md border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800/50 shadow-sm"
+  >
+    {
+      cover ? (
+        <>
+          <img
+            src={cover}
+            alt={`${title} cover`}
+            loading="lazy"
+            class="h-full w-full object-cover"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          />
+          <div
+            hidden
+            class="h-full w-full items-center justify-center p-3 text-center text-base font-medium text-zinc-500 dark:text-zinc-400"
+          >
+            {title}
+          </div>
+        </>
+      ) : (
+        <div class="flex h-full w-full items-center justify-center p-3 text-center text-base font-medium text-zinc-500 dark:text-zinc-400">
+          {title}
+        </div>
+      )
+    }
+    {
+      recommend && (
+        <span
+          class="absolute top-1.5 right-1.5 text-blue-500 drop-shadow-[0_1px_1px_rgba(0,0,0,0.4)]"
+          title="Recommended"
+          aria-label="Recommended"
+        >
+          &#9733;
+        </span>
+      )
+    }
+  </div>
+
+  <div class="flex flex-col">
+    <span
+      class="text-lg font-semibold tracking-tight leading-tight text-zinc-800 dark:text-zinc-200 line-clamp-2"
+    >
+      {title}
+    </span>
+    <span class="text-base text-zinc-500 dark:text-zinc-400 line-clamp-1">
+      {author}
+    </span>
+  </div>
+</Wrapper>

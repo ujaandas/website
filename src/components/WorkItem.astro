@@ -5,37 +5,65 @@ interface Props {
   role: string;
   startDate: Date;
   endDate: Date | "Present";
+  isLast?: boolean;
+  showTimeline?: boolean;
 }
 
-const { company, role, startDate, endDate } = Astro.props;
+const {
+  company,
+  role,
+  startDate,
+  endDate,
+  isLast = false,
+  showTimeline = false,
+} = Astro.props;
 
-const format = (d: Date | "Present") => {
-  if (d === "Present") return d;
+const format = (d: Date) => {
   return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 };
 
-const dateString = `${format(startDate)} - ${format(endDate)}`;
+const isCurrent = endDate === "Present";
 ---
 
-<div class="flex flex-col gap-2">
-  <div
-    class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4"
-  >
-    <h3
-      class="text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-100"
-    >
-      {company}
-      <span
-        class="text-lg leading-7 text-zinc-500 dark:text-zinc-400 font-normal"
-        >/ {role}</span
-      >
-    </h3>
-    <span class="text-lg leading-6 text-zinc-500 dark:text-zinc-400 shrink-0">
-      {dateString}
-    </span>
-  </div>
+<div class="flex gap-4">
+  {
+    showTimeline && (
+      <div class="hidden sm:flex flex-col items-center">
+        <div class="w-2.5 h-2.5 mt-2 rounded-full bg-zinc-300 dark:bg-zinc-600 shrink-0" />
+        {!isLast && <div class="w-px grow bg-zinc-200 dark:bg-zinc-800 mt-2" />}
+      </div>
+    )
+  }
 
-  <Prose>
-    <slot />
-  </Prose>
+  <div class="flex flex-col gap-2 pb-8 flex-1 min-w-0">
+    <div
+      class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4"
+    >
+      <h3
+        class="text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-100"
+      >
+        {company}
+        <span
+          class="text-lg leading-7 text-zinc-500 dark:text-zinc-400 font-normal"
+          >/ {role}</span
+        >
+      </h3>
+      <span class="text-lg leading-6 text-zinc-500 dark:text-zinc-400 shrink-0">
+        {format(startDate)} -{" "}
+        {
+          isCurrent ? (
+            <span class="text-blue-600 dark:text-blue-400 font-medium">
+              Present
+            </span>
+          ) : (
+            format(endDate as Date)
+          )
+        }
+      </span>
+    </div>
+
+    <Prose>
+      <slot />
+    </Prose>
+  </div>
 </div>

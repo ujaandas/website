@@ -12,6 +12,7 @@
     "preview": "astro build && wrangler dev",
     "astro": "astro",
     "generate-types": "wrangler types",
+    "reads:fetch-covers": "node scripts/fetch-book-covers.mjs",
     "deploy": "astro build && wrangler deploy"
   },
   "dependencies": {

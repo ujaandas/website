@@ -29,6 +29,41 @@ export default config({
                 author: fields.text({ label: "Author (Leave blank if self)" }),
             },
         }),
+        reads: collection({
+            label: "Reads",
+            slugField: "title",
+            path: "src/content/reads/*",
+            format: { data: "yaml" },
+            schema: {
+                title: fields.slug({ name: { label: "Title" } }),
+                author: fields.text({
+                    label: "Author (optional)",
+                    description: "Leave blank and run `pnpm reads:fetch-covers` to backfill it from Open Library.",
+                }),
+                status: fields.select({
+                    label: "Status",
+                    options: [
+                        { label: "Currently reading", value: "reading" },
+                        { label: "Read", value: "read" },
+                    ],
+                    defaultValue: "read",
+                }),
+                shelf: fields.text({
+                    label: "Shelf",
+                    description: "e.g. Computer Science, Machine Learning, Classics",
+                }),
+                recommend: fields.checkbox({
+                    label: "Recommend it",
+                    defaultValue: false,
+                }),
+                cover: fields.text({
+                    label: "Cover image URL (optional)",
+                    description: "Leave blank and run `pnpm reads:fetch-covers` to download and save one locally. Paste a URL here only to override.",
+                }),
+                date: fields.date({ label: "Date finished", description: "Leave blank if still reading" }),
+                url: fields.text({ label: "Link (Goodreads, publisher, etc.)" }),
+            },
+        }),
         writing: collection({
             label: "Writing",
             slugField: "title",

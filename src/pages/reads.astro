@@ -1,0 +1,93 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import BookCard from "@/components/BookCard.astro";
+import { Separator } from "@/components/ui/separator";
+
+const SHELF_ORDER = ["Computer Science", "Machine Learning", "Classics"];
+
+const allReads = await getCollection("reads");
+const data = allReads.map((r) => r.data);
+
+const currentlyReading = data.filter((r) => r.status === "reading");
+const read = data.filter((r) => r.status === "read");
+
+const shelves = [...new Set(read.map((r) => r.shelf))].sort((a, b) => {
+  const ai = SHELF_ORDER.indexOf(a);
+  const bi = SHELF_ORDER.indexOf(b);
+  if (ai === -1 && bi === -1) return a.localeCompare(b);
+  if (ai === -1) return 1;
+  if (bi === -1) return -1;
+  return ai - bi;
+});
+---
+
+<Layout title="Reads | Ujaan Das">
+  <div class="flex flex-col gap-10 mt-8">
+    <div class="flex flex-col gap-4">
+      <h1
+        class="text-2xl font-bold tracking-tight text-zinc-700 dark:text-zinc-300"
+      >
+        Reads
+      </h1>
+      <p class="text-lg leading-7 text-zinc-600 dark:text-zinc-400">
+        A bookshelf, more or less.
+      </p>
+    </div>
+
+    {
+      currentlyReading.length > 0 && (
+        <section class="flex flex-col gap-4">
+          <h2 class="text-lg font-semibold tracking-tight text-zinc-700 dark:text-zinc-300">
+            Currently reading
+          </h2>
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-8">
+            {currentlyReading.map((item) => (
+              <BookCard
+                title={item.title}
+                author={item.author ?? "Unknown"}
+                cover={item.cover}
+                recommend={item.recommend}
+                url={item.url}
+              />
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {currentlyReading.length > 0 && shelves.length > 0 && <Separator />}
+
+    {
+      shelves.length > 0 ? (
+        shelves.map((shelf, i) => (
+          <>
+            {i > 0 && <Separator />}
+            <section class="flex flex-col gap-4">
+              <h2 class="text-lg font-semibold tracking-tight text-zinc-700 dark:text-zinc-300">
+                {shelf}
+              </h2>
+              <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-6 gap-y-8">
+                {read
+                  .filter((item) => item.shelf === shelf)
+                  .map((item) => (
+                    <BookCard
+                      title={item.title}
+                      author={item.author ?? "Unknown"}
+                      cover={item.cover}
+                      recommend={item.recommend}
+                      url={item.url}
+                    />
+                  ))}
+              </div>
+            </section>
+          </>
+        ))
+      ) : (
+        <p class="text-lg leading-6 text-zinc-500 dark:text-zinc-400">
+          Nothing on the shelf yet.
+        </p>
+      )
+    }
+  </div>
+</Layout>
