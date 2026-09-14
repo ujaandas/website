@@ -4,10 +4,15 @@ description: A compiler and auto-regressive runtime for better LLM structured ou
 date: 2026-08-18
 href: https://github.com/ujaandas/invariants
 ---
-**invariants** moves formal semantic verification directly into the token generation loop in C++. By validating partial generation state against schema invariants at each step, illegal tokens are pruned before they are ever sampled.
+Most structured output tooling for LLMs only constrains the *shape* of a response - valid JSON, a string here, a number
+there - and leaves everything else to the prompt. Ask for a `total_price` next to a `unit_price` and a `quantity`, and
+nothing stops the model from generating numbers that don't actually multiply out. You just hope, validate after the
+fact, and maybe regenerate and hope again.
 
-In essence, it is a compiler and inference-time verification engine designed to enforce deterministic, context-sensitive constraints during autoregressive LLM generation.
-
-- **Custom DSL:** A schema definition language for declaring cross-field rules, dynamic ranges, and operational invariants.
-- **Compiler pipeline:** Uses multi-stage tree walks and targeted codegen passes to turn schema constraints into fast evaluation routines for the sampler.
-- **Runtime integration:** Evaluates constraints during the forward pass with minimal per-token overhead.
+**invariants** treats that as a compiler problem instead of a prompting problem. You write a schema in a small DSL -
+fields, types, and invariants like `this.total == this.unit_price * this.quantity` - and it gets compiled ahead of time
+into a dependency graph over the fields, then reduced to an execution schedule. At generation time, the runtime walks
+that schedule field by field: if a field is fully determined by fields already generated, it just computes it and skips
+the model for that field entirely; otherwise, it masks the model's logits token by token so only tokens consistent with
+that field's constraints - and everything already committed elsewhere in the document - can ever be sampled. Nothing
+invalid makes it into the output, because it's never given the chance to be sampled in the first place.
