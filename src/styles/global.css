@@ -129,4 +129,13 @@
   html {
     @apply font-serif;
   }
+  ::selection {
+    background-color: var(--color-blue-700);
+    color: var(--color-white);
+  }
+  .dark ::selection {
+    background-color: var(--color-blue-400);
+    color: var(--color-zinc-950);
+  }
 }
+

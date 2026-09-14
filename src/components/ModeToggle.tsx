@@ -24,6 +24,9 @@ export function ModeToggle() {
         document.documentElement.classList.toggle("dark", nextDark)
         localStorage.setItem("theme", nextDark ? "dark" : "light")
         setIsDark(nextDark)
+
+        const meta = document.getElementById("theme-color-meta")
+        if (meta) meta.setAttribute("content", nextDark ? "#0a0a0a" : "#ffffff")
     }
 
     return (

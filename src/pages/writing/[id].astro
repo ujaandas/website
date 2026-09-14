@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Prose from "@/components/Prose.astro";
+import { readingTime } from "@/lib/reading-time";
 
 export async function getStaticPaths() {
   const posts = await getCollection("writing");
@@ -13,6 +14,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+const minutes = readingTime(post.body);
 
 const formatDate = (d: Date) => {
   return d.toLocaleDateString("en-US", {
@@ -31,9 +33,17 @@ const formatDate = (d: Date) => {
       >
         {post.data.title}
       </h1>
-      <time class="text-lg leading-6 text-zinc-500 dark:text-zinc-400">
-        {formatDate(post.data.date)}
-      </time>
+      <div
+        class="flex items-baseline gap-2 text-lg leading-6 text-zinc-500 dark:text-zinc-400"
+      >
+        <time>{formatDate(post.data.date)}</time>
+        {minutes && (
+          <>
+            <span aria-hidden="true">&middot;</span>
+            <span>{minutes}</span>
+          </>
+        )}
+      </div>
     </header>
 
     <Prose>
