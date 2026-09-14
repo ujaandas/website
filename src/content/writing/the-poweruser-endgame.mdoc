@@ -2,22 +2,24 @@
 title: The poweruser endgame
 date: 2026-08-19
 ---
-I often wonder what the endgame for developers and engineers are. I know, even of many of the people who truly are in this field for their love thereof, it's not much beyond a job at the end of the day.
+I often wonder what the endgame for developers and engineers are. I know, even of many of the people who truly are in
+this field for their love thereof, it's not much beyond a job at the end of the day.
 
-So what about power users? People, like myself, who love optimizing hell out of everything they do? More often than not, those who maintain a dotfiles repo, maybe use Nix, build their own personal library functions, etc...
+So what about power users? People, like myself, who love optimizing hell out of everything they do? More often than not,
+those who maintain a dotfiles repo, maybe use Nix, build their own personal library functions, etc...
 
-For me, personally, it's owning our tools. As someone who considers themselves compiler-curious, that means making my own language, and using it to write my own tools. Tailored and crafted for *me*.
+Looking back, most of my side projects aren't really "projects" so much as complaints about my own workflow that got out
+of hand.
 
-I've been playing with the idea of a language frontend for C++ for a while now.
+### The ramifications
 
-> Ironically, that's how C++ was born!
+The obvious problem is that this doesn't scale. Every hour spent patching your WM or rewriting your editor's
+fuzzy-finder is an hour not spent on whatever you were actually supposed to be doing. Yak-shaving is a very real, very
+seductive trap, and I've fallen into it more times than I'd like to admit.
 
-I envision a front-end for C++ which enforces the newer "style" of programming in the language we've seen become more and more popular since C++11.
+The less obvious benefit, though, is depth. Once you've written your own editor, your build system stops being a black
+box. Once you've patched your WM, X11/Wayland internals stop being magic. You end up understanding the *entire* stack
+you live in, top to bottom, instead of just the surface area most people ever touch.
 
-- Raw pointers are illegal, or are implicitly shared.
-
-- The array operators use `std::array` under the hood.
-
-- No header files.
-
-  And much more...
+I am genuinely someone who loves understanding as much of my tools as I can, so doing all of this in a "non-product"
+kind of way, and one which is _just_ for me, feels great.

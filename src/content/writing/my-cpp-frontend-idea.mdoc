@@ -1,0 +1,35 @@
+---
+title: My C++ frontend idea
+date: 2026-08-20
+---
+Owning my tools, for me, starts with the language. I've been playing with the idea of a language frontend for C++ for a
+while now.
+
+> Ironically, that's how C++ was born!
+
+I envision a front-end for C++ which enforces the newer "style" of programming in the language we've seen become more
+and more popular since C++11.
+
+- Raw pointers are illegal, or are implicitly shared.
+
+- The array operators use `std::array` under the hood.
+
+- No header files.
+
+And much more...
+
+### Standing on some pretty relevant shoulders
+
+This isn't exactly a new idea, which is comforting in a "I'm not crazy" kind of way.
+
+Bjarne's original `cfront` did more or less this in reverse - it translated "C with Classes" into plain C, so you could
+bootstrap an entirely new language on top of existing C compilers and linkers. Herb Sutter's
+[cppfront](https://github.com/hsutter/cppfront) is the modern spiritual successor: a "syntax 2" for C++ that transpiles
+down into today's syntax, opting you into memory-safety defaults, bounds-checking, and sane initialization rules without
+needing a whole new compiler backend.
+
+I'd be lying if I said I wasn't basically nodding along to cppfront's entire thesis. Where I differ is more about which
+defaults I want flipped, and how opinionated the frontend should be about ownership.
+
+I think the bulk of the work remains to be sketched out, and really as it stands, it's just an idea I'm playing around
+with, but one I've been passionate about pursuing for a while now, so we'll see where it goes.
