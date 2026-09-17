@@ -2,8 +2,7 @@
 title: More on invariants
 date: 2026-09-13
 ---
-My dissertation is called [invariants](https://github.com/ujaandas/invariants), and the short version is: it's a
-compiler for making LLMs stop generating numbers that don't add up.
+My dissertation is called [invariants](https://github.com/ujaandas/invariants), and the short version is: it's a compiler for making LLMs stop generating numbers that don't add up.
 
 ### The actual problem
 
@@ -49,43 +48,43 @@ Every one of the actually hard bugs showed up at the boundary between "compiled 
 model," and most of them are pretty funny in hindsight:
 
 - My original binder registered a field and bound its constraints in the same pass, which meant a field referencing
-another field declared *later* in the same spec just silently failed to resolve. Fix was a two-pass binder - register
-every signature first, then bind constraints once everything's visible.
+  another field declared *later* in the same spec just silently failed to resolve. Fix was a two-pass binder - register
+  every signature first, then bind constraints once everything's visible.
 - Dependency tracking originally identified fields by an integer id scoped to their own symbol table, which broke the
-second a spec could be nested or reused twice in the same document - same id, two different actual fields. Had to switch
-to fully-qualified string paths instead.
+  second a spec could be nested or reused twice in the same document - same id, two different actual fields. Had to switch
+  to fully-qualified string paths instead.
 - BPE and SentencePiece tokenizers mark word boundaries with completely different characters, which quietly broke my
-structural validity checks until I handled both explicitly. This is also the entire reason I benchmarked against two
-separate model families instead of one - a single tokenizer would never have caught it.
+  structural validity checks until I handled both explicitly. This is also the entire reason I benchmarked against two
+  separate model families instead of one - a single tokenizer would never have caught it.
 - For a while, only the top 1,000 highest-probability tokens ever got checked against the mask, for speed. Anything
-ranked lower kept its original score completely untouched - meaning a model that really wanted an invalid token could
-just reach past the window and grab it. Nobody was stopping it.
+  ranked lower kept its original score completely untouched - meaning a model that really wanted an invalid token could
+  just reach past the window and grab it. Nobody was stopping it.
 - A non-contiguous NumPy array got silently *copied* by pybind11 instead of mutated in place, so for a while the model
-was running on completely unmasked logits with zero errors raised anywhere. I only caught this because a
-heavily-constrained field produced a value that should've been impossible.
+  was running on completely unmasked logits with zero errors raised anywhere. I only caught this because a
+  heavily-constrained field produced a value that should've been impossible.
 - `llama.cpp`'s end-of-sequence token decodes to an empty string, which slid straight through my masking loop looking
-like a harmless no-op and quietly ended generation early.
+  like a harmless no-op and quietly ended generation early.
 - A numeric bound like `<= 80` was being checked digit-by-digit, but a value like `160` only got rejected once it had
-*already finished generating* - which defeats the entire point. Took a genuinely annoying amount of thinking about
-monotonicity (appending a digit to a non-negative number can only make it bigger) to prune those early instead of
-after the fact. None of these got caught by unit tests. All of them got caught by actually running the thing against
-a live model and watching it do something it shouldn't have been able to do. 
-    
-    
-### Does it actually work 
+  *already finished generating* - which defeats the entire point. Took a genuinely annoying amount of thinking about
+  monotonicity (appending a digit to a non-negative number can only make it bigger) to prune those early instead of
+  after the fact. None of these got caught by unit tests. All of them got caught by actually running the thing against
+  a live model and watching it do something it shouldn't have been able to do.
+
+### Does it actually work
 
 Benchmarked across twelve suites (some synthetic, some pulled from real JSON Schemas - Stripe invoices, Kubernetes resource
 limits, GitHub Actions configs) against two model families and four other systems (a plain unconstrained prompt,
-`llama.cpp`'s own grammar, and two third-party libraries, Outlines and Guidance): 
+`llama.cpp`'s own grammar, and two third-party libraries, Outlines and Guidance):
+
 - 90% of field-level assertions pass, against 84% (Guidance), 80% (grammar baseline), 75% (Outlines), and 1% for a plain prompt with no constraints
-at all. 
+  at all.
 - On constraints that are pure cross-field math - the entire reason this project exists - every
-grammar-based system craters to ~54-59%, while invariants holds at 88.7%. Makes sense: that's the one category a
-context-free grammar was never going to be able to express in the first place. 
+  grammar-based system craters to ~54-59%, while invariants holds at 88.7%. Makes sense: that's the one category a
+  context-free grammar was never going to be able to express in the first place.
 - It's also ~22% faster on average than the grammar baseline, mostly because a field that gets computed instead of generated costs zero tokens. The one
-place it loses is long, totally unconstrained free-text fields, where there's nothing to skip and the
-full-vocabulary mask has to run on every single token for no benefit - the overhead has nothing to offset it. Good
-to know your failure mode, at least. 
+  place it loses is long, totally unconstrained free-text fields, where there's nothing to skip and the
+  full-vocabulary mask has to run on every single token for no benefit - the overhead has nothing to offset it. Good
+  to know your failure mode, at least.
 
 The only real "big" problem that I still haven't quite solved is that nothing generated can ever be un-generated, if a value turns out to violate a constraint discovered later, the only option is to crash. No backtracking. Solving that would require speculative generation with rollback (which I actually wanted to do, just didn't have the time/scope to do so).
 
