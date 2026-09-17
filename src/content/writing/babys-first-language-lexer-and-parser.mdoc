@@ -1,10 +1,10 @@
 ---
-title: "Baby's first language: lexer and parser"
+title: 'Baby''s first language: lexer and parser'
 date: 2026-09-14
 ---
-First post in a series walking through how [invariants](https://github.com/ujaandas/invariants)' compiler actually works, phase by phase. If you haven't read [the overview post](/writing/invariants): it's a small DSL for describing structured data and the relationships between its fields, compiled ahead of time into a schedule that ends up driving an LLM's token generation. This series is about the compiler itself, not the LLM part.
+This is my first post in a series walking through how [invariants](https://github.com/ujaandas/invariants)' compiler actually works, phase by phase. If you haven't read [the overview post](/writing/invariants): it's a small DSL for describing structured data and the relationships between its fields, compiled ahead of time into a schedule that ends up driving an LLM's token generation. This series is about the compiler itself, not the LLM part.
 
-If you want to actually build one of these yourself at some point, the resource I'd point you to first is [Crafting Interpreters](https://craftinginterpreters.com/) by Bob Nystrom - it's the book I actually learned this from, it's free online, and basically everything in this post is the same shape of idea, just applied to a much smaller, much weirder language than the one in the book.
+If you want to actually build one of these yourself at some point, I really, really, REALLY strongly recommend reading [Crafting Interpreters](https://craftinginterpreters.com/) by Bob Nystrom - it's, IMO, the best book to get started with, it's where I learnt most of this from, it's free online, and basically everything in this post is the same shape of idea, just applied to a much smaller, much weirder language than the one in the book.
 
 Let's start at the very front: how does a string of source text turn into something a compiler can actually reason about?
 
@@ -16,15 +16,15 @@ spec CloudProvision {
 }
 ```
 
-There are two jobs here, done by two completely separate pieces: the **lexer** turns that raw text into a flat list of tokens, and the **parser** turns that flat list into a tree. Let's do both, in order.
+There are two things that need to be done here: the **lexer** turns that raw text into a flat list of tokens, and the **parser** turns that flat list into a tree.
 
 ### Step 1: the lexer
 
-The lexer's only job is to walk the source character by character and decide "what is this a piece of." It doesn't know anything about specs or fields or what's structurally valid - it just recognizes chunks.
+The lexer's only job is to walk the source character by character and decide "what is this a piece of." It doesn't know anything about structure or fields or what's valid - it just recognizes "chunks".
 
-Feed it `value >= 8;` and it should spit out four tokens: an identifier (`value`), an operator (`>=`), a number (`8`), and a semicolon. The way you actually do this is boring almost by design: you look at the current character, decide what kind of token it could be starting, and consume characters until that token is complete.
+Feed it `value >= 8;` and it should spit out four tokens: an identifier (`value`), an operator (`>=`), a number (`8`), and a semicolon. The way you actually do this is literally just as simple as you think: you look at the current character, decide what kind of token it could be starting, and consume characters until that token is complete.
 
-Keywords are the one part worth calling out, because the trick is not to special-case them in the scanner at all. You scan any run of letters as a plain identifier first, and only afterwards check whether that identifier happens to match something in a keyword table:
+Very importantly, keywords are *not* a special case, because the trick is to scan any run of letters as a plain identifier first, and only *afterwards* check whether that identifier happens to match something in a keyword table:
 
 ```cpp
 inline static const std::unordered_map<std::string_view, TokenType> keywords{
@@ -37,15 +37,15 @@ inline static const std::unordered_map<std::string_view, TokenType> keywords{
 };
 ```
 
-So `spec` and `CloudProvision` go through the exact same code path in the scanner - it's only after scanning that one of them turns out to be a keyword and the other stays a plain identifier. One code path instead of two means one less place to get out of sync.
+So from the above example, `spec` and `CloudProvision` go through the exact same code path in the scanner - it's only after scanning that one of them turns out to be a keyword and the other stays a plain identifier.
 
-By the end, `value >= 8;` becomes a flat list: `[IDENTIFIER(value), GREATER_EQUAL, NUMBER(8), SEMICOLON]`. No structure yet, no idea that `value >= 8` is a comparison feeding into a constraint - just "here are the pieces, in order."
+By the end, `value >= 8;` becomes a flat list: `[IDENTIFIER(value), GREATER_EQUAL, NUMBER(8), SEMICOLON]`.
 
 ### Step 2: the grammar
 
 Before writing the parser, you need to know what you're actually trying to parse *into*. This is where a [formal grammar earns its keep](https://github.com/ujaandas/invariants/tree/main/docs/lang_grammar).
 
-The statement grammar is the scaffolding - `spec`, `field`, `invariant`, and nothing else:
+The statement grammar is the "scaffolding" of the invariants lang - `spec`, `field`, `invariant`, and nothing else:
 
 ```
 spec
@@ -58,7 +58,7 @@ constraint
     = expression, ";";
 ```
 
-The expression grammar is where all the actual computation lives - arithmetic, comparisons, boolean logic - and it's written as a chain, each rule built out of the one below it:
+The expression grammar is where all the actual computation lives - arithmetic, comparisons, boolean logic - written out as a chain, each rule built out of the one below it:
 
 ```
 expression   = implication;
@@ -75,7 +75,9 @@ postfix      = primary, { postfix_op };
 primary      = literal | IDENTIFIER | "this" | list | "(", expression, ")";
 ```
 
-This chain *is* the operator precedence table. `implication` sits above `disjunction`, which sits above `conjunction`, all the way down to `primary` at the bottom, and the ordering isn't arbitrary - it's exactly "loosest-binding operator first, tightest-binding last." `->` has to be the loosest, because you want `a || b -> c || d` to group as `(a || b) -> (c || d)`, not something weirder. `*` has to bind tighter than `+`, so it sits below `term`. Read top to bottom, the grammar already tells you the precedence order - you don't need a separate table anywhere.
+Here, the chain *is* the operator precedence table. `implication` sits above `disjunction`, which sits above `conjunction`, all the way down to `primary` at the bottom.
+
+Note that the ordering isn't arbitrary - it's exactly "loosest-binding operator first, tightest-binding last." `->` has to be the loosest, because you want `a || b -> c || d` to group as `(a || b) -> (c || d)`, not something weirder. `*` has to bind tighter than `+`, so it sits below `term`. Read top to bottom, the grammar already tells you the precedence order, and so you don't need a separate table anywhere.
 
 ### Step 3: the parser
 
@@ -110,11 +112,13 @@ Notice `implication` doesn't know or care what a disjunction actually contains -
 Let's trace `value >= 8` through this by hand, since it's small enough to do fully:
 
 1. `expression()` calls `implication()`.
-2. `implication()` calls `disjunction()`, which calls `conjunction()`, which calls `equality()` - none of these see an operator they recognize yet, so each just delegates straight down.
-3. `equality()` calls `comparison()`.
-4. `comparison()` calls `membership()`, which calls `term()`, which calls `factor()`, which calls `unary()`, which calls `postfix()`, which calls `primary()`.
-5. `primary()` is the first function that actually consumes something: it sees the identifier `value` and returns it as a leaf node. That bubbles back up through `postfix`, `unary`, `factor`, and `term` untouched, since none of them see an operator they own.
-6. Back in `comparison()`, having gotten `value` back from `membership()`, it now checks the next token - `>=` - matches, so it consumes it, calls `membership()` again for the right-hand side (which bottoms out and returns `8`), and wraps both into a single `BinaryExpr{value, GreaterEqual, 8}`.
-7. That comparison node bubbles all the way back up through `equality`, `conjunction`, `disjunction`, and `implication` untouched, since `>= ` was the only operator in the whole expression, and it becomes the final tree.
+1. `implication()` calls `disjunction()`, which calls `conjunction()`, which calls `equality()` - none of these see an operator they recognize yet, so each just delegates straight down.
+1. `equality()` calls `comparison()`.
+1. `comparison()` calls `membership()`, which calls `term()`, which calls `factor()`, which calls `unary()`, which calls `postfix()`, which calls `primary()`.
+1. `primary()` is the first function that actually consumes something: it sees the identifier `value` and returns it as a leaf node. That bubbles back up through `postfix`, `unary`, `factor`, and `term` untouched, since none of them see an operator they own.
+1. Back in `comparison()`, having gotten `value` back from `membership()`, it now checks the next token - `>=` - matches, so it consumes it, calls `membership()` again for the right-hand side (which bottoms out and returns `8`), and wraps both into a single `BinaryExpr{value, GreaterEqual, 8}`.
+1. That comparison node bubbles all the way back up through `equality`, `conjunction`, `disjunction`, and `implication` untouched, since `>=` was the only operator in the whole expression, and it becomes the final tree.
 
-Thirteen functions deep, and only one of them - `comparison` - actually did anything, because it was the only precedence level with a matching operator in this particular expression. Everything else was pure pass-through. That's the entire trick: most of the chain doesn't cost you anything at runtime beyond a function call, and you get correct precedence for free just by getting the order of the chain right once, up front.
+See how we dove thirteen functions deep, and only one of them - `comparison` - actually did anything, because it was the only precedence level with a matching operator in this particular expression. Everything else was pure pass-through. That's the entire trick and what makes RD so brilliant; most of the chain doesn't cost you anything at runtime beyond a function call, and you get correct precedence for free just by getting the order of the chain right once, up front.
+
+Once we're done with this, we should have a parse tree, or abstract syntax tree (AST). This tells us the structure of our language. The next few steps involve "phases" of computations *surrounding* this tree, either transforming it, or *lowering* it into other trees.
